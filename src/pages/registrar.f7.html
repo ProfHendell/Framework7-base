@@ -1,0 +1,95 @@
+<template>
+    <div class="page" data-name="register-page">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                    </a>
+                </div>
+                <div class="title">Registrar usuario</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="block-title">Registrar en el sistema</div>
+            <div class="list no-hairlines-md">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Correo</div>
+                                <div class="item-input-wrap">
+                                    <input id="correo" type="email" placeholder="Ingresa tu correo electrónico" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Contraseña</div>
+                                <div class="item-input-wrap">
+                                    <input id="password" type="password" placeholder="Contraseña valida" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Repetir contraseña</div>
+                                <div class="item-input-wrap">
+                                    <input id="password2" type="password" placeholder="Contraseña anterior" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <p class="row">
+                <a href="#" class="col button" @click=${registrarUsuario}>Registrar</a>
+            </p>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $, $f7, $f7router, $update }) => {
+        
+        // URL BASE
+        const baseUrl = "http://localhost/uml/Framework7-api/";
+
+        const registrarUsuario = () => {
+            // cuerpo
+            // $ = Selector JQuery
+            let correo = $('#correo').val(); // Valor usando el selector JQuery del input correo
+            let password = $('#password').val();
+            let password2 = $('#password2').val();
+
+            if (correo.length >= 3 && password === password2) {
+                // El usuario se registra
+                let url = baseUrl + 'crear.php';
+                $f7.request.json(url, {
+                    correo: correo,
+                    password: password
+                })
+                    .then(function (res) {
+                        let data = res.data;
+                        if (data.ingreso) {
+                            $f7.dialog.alert('Usuario registrador correctamente');
+                            $f7router.back(); // Regresa a la pagina anterior cuando se registra el usuario
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        $f7.dialog.alert('No se pudo establecer una conexión con el API');
+                    });
+            } else {
+                // El correo sea muy corto, o las contraseñas no sean iguales
+                $f7.dialog.alert('Formulario incorrecto');
+            }
+
+        };
+        return $render;
+    };
+</script>
