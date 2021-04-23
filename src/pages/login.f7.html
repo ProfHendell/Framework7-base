@@ -1,0 +1,82 @@
+<template>
+    <div class="page" data-name="login-page">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="if-not-md">Back</span>
+                    </a>
+                </div>
+                <div class="title">Iniciar sesión</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="block-title">Ingresar al sistema</div>
+            <div class="list no-hairlines-md">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Correo</div>
+                                <div class="item-input-wrap">
+                                    <input id="correo" type="email" placeholder="Ingresa tu correo electrónico" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Contraseña</div>
+                                <div class="item-input-wrap">
+                                    <input id="password" type="password" placeholder="Contraseña valida" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <p class="row">
+                <a href="#" class="col button" @click=${comprobarLogin}>Iniciar sesión</a>
+            </p>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $, $f7, $f7router, $update }) => {
+
+        const baseUrl = "http://localhost/uml/Framework7-api/";
+
+        const comprobarLogin = () => {
+            let correo = $('#correo').val();
+            let password = $('#password').val();
+
+            let url = baseUrl + 'login.php';
+
+            $f7.request.json(url, {
+                correo: correo,
+                password: password
+            })
+                .then(function (res) {
+                    let data = res.data;
+                    console.log(data);
+                    if (data.valid) {
+                        if (data.usuario.tipo === 'Pendiente') {
+                            $f7.dialog.alert('Este usuario no ha sido validado aun.');
+                        } else {
+                            $f7.dialog.alert('Ingreso al sistema correcto');
+                            // Se guarda el usuario en cache
+                            $f7.form.storeFormData('asistencia_usuario', data.usuario);
+                            $f7router.back();
+                        }
+                    } else {
+                        $f7.dialog.alert('Correo o contraseña incorrecto');
+                    }
+                });
+        };
+
+        return $render;
+    };
+</script>

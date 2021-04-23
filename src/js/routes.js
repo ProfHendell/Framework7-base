@@ -10,6 +10,7 @@ import RequestAndLoad from '../pages/request-and-load.f7.html';
 import NotFoundPage from '../pages/404.f7.html';
 
 import RegistrarPage from '../pages/registrar.f7.html';
+import LoginPage from '../pages/login.f7.html';
 
 var routes = [
   {
@@ -19,6 +20,10 @@ var routes = [
   {
     path: '/registrar-page/',
     component: RegistrarPage,
+  },
+  {
+    path: '/login-page/',
+    component: LoginPage,
   },
   {
     path: '/about/',

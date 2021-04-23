@@ -99,7 +99,13 @@
   </div>
 </template>
 <script>
-export default () => {
+export default (props, { $, $f7, $f7router, $update, $on }) => {
+  $on('pageInit', () => {
+    let usuario = $f7.form.getFormData('asistencia_usuario');
+    if (usuario) {
+      $f7.dialog.alert(`Bienvenido ${usuario.correo}! eres ${usuario.tipo}`);
+    }
+  });
   return $render;
 }
 </script>
