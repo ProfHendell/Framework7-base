@@ -11,6 +11,7 @@ import NotFoundPage from '../pages/404.f7.html';
 
 import RegistrarPage from '../pages/registrar.f7.html';
 import LoginPage from '../pages/login.f7.html';
+import registrarAsistencia from '../pages/registrarAsistencia.f7.html';
 
 var routes = [
   {
@@ -20,6 +21,10 @@ var routes = [
   {
     path: '/registrar-page/',
     component: RegistrarPage,
+  },
+  {
+    path: '/registrar-asistencia/',
+    component: registrarAsistencia
   },
   {
     path: '/login-page/',

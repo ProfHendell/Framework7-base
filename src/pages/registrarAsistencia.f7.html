@@ -1,0 +1,129 @@
+<template>
+    <div class="page">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="if-not-md">Regresar</span>
+                    </a>
+                </div>
+                <div class="title">Registrar asistencia</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="block block-strong">
+                <p>WIP</p>
+            </div>
+            <div class="list no-hairlines-md">
+                <ul>
+                    <li class="item-content item-input">
+                        <div class="item-media">
+                            <i class="icon material-icons">build</i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title item-floating-label">Carrera</div>
+                            <div class="item-input-wrap">
+                                <input type="text" id="nombreCarrera" placeholder="Nombre de la carrera"
+                                    @input=${inputCarera} />
+                                <span class="input-clear-button"></span>
+                                <span id="nombreCarreraResultados"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-media">
+                            <i class="icon demo-list-icon"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title item-label">Año de la carrera</div>
+                            <div class="item-input-wrap input-dropdown-wrap">
+                                <select id="añoCarrera" placeholder="Escoja un año">
+                                    <option value="1">1er año</option>
+                                    <option value="2">2do año</option>
+                                    <option value="3">3er año</option>
+                                    <option value="4">4to año</option>
+                                    <option value="5">5to año</option>
+                                </select>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-media">
+                            <i class="icon material-icons">build</i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title item-floating-label">Clase</div>
+                            <div class="item-input-wrap">
+                                <input type="text" id="nombreClase" placeholder="Nombre de la clase" />
+                                <span class="input-clear-button"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-media">
+                            <i class="icon demo-list-icon"></i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title item-label">Trimestre</div>
+                            <div class="item-input-wrap input-dropdown-wrap">
+                                <select id="añoCarrera" placeholder="Escoja un trimestre">
+                                    <option value="1">I</option>
+                                    <option value="2">II</option>
+                                    <option value="3">III</option>
+                                    <option value="4">IV</option>
+                                </select>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <button class="col button button-large button-fill">Cargar asistencia</button>
+            <div class="card card-expandable">
+                <div class="card-content">
+                    <div class="bg-color-red" style="height: 300px">
+                        <div class="card-header text-color-white display-block">Framework7<br />
+                            <small style="opacity: 0.7">Build Mobile Apps</small>
+                        </div>
+                        <a href="#" class="link card-close card-opened-fade-in color-white"
+                            style="position: absolute; right: 15px; top: 15px">
+                            <i class="icon f7-icons">xmark_circle_fill</i>
+                        </a>
+                    </div>
+                    <div class="card-content-padding">
+                        <p>Framework7 - is a free and open source HTML mobile framework to develop hybrid mobile
+                            apps or web
+                            apps with iOS or Android (Material) native look and feel. It is also an indispensable
+                            prototyping apps
+                            tool to show working app prototype as soon as possible in case you need to.</p>
+                        <p>The main approach of the Framework7 is to give you an opportunity to create iOS and
+                            Android
+                            (Material) apps with HTML, CSS and JavaScript easily and clear. Framework7 is full of
+                            freedom. It
+                            doesn't limit your imagination or offer ways of any solutions somehow. Framework7 gives
+                            you freedom!
+                        </p>
+                        <p>Framework7 is not compatible with all platforms. It is focused only on iOS and Android
+                            (Material) to
+                            bring the best experience and simplicity.</p>
+                        <p>Framework7 is definitely for you if you decide to build iOS and Android hybrid app
+                            (Cordova or
+                            PhoneGap) or web app that looks like and feels as great native iOS or Android (Material)
+                            apps.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $, $f7, $f7router, $update }) => {
+        const inputCarera = () => {
+            let input = $('#nombreCarrera');
+            $('#nombreCarreraResultados').html(`<a href="#">${input.val()}</a>`);
+            console.log(input.val());
+        };
+        return $render;
+    };
+</script>
