@@ -1,0 +1,125 @@
+<template>
+    <div class="page">
+        <div class="navbar">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="if-not-md">Back</span>
+                    </a>
+                </div>
+                <div class="title">Carreras</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="block-title">Lista de carreras</div>
+            <div class="data-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th class="label-cell">Nombre de la carrera</th>
+                            <th class="numeric-cell">Año de la carrera</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${carreras.map((carrera) => $h`
+                        <tr>
+                            <td>
+                                <a class="button" @click=${()=> borrarCarrera(carrera.id_carrera)}>
+                                    <i class="f7-icons">trash</i>
+                                </a>
+                            </td>
+                            <td class="label-cell">${carrera.nombre_carrera}</td>
+                            <td class="numeric-cell">${carrera.anio_carrera}</td>
+
+                        </tr>
+                        `)}
+                    </tbody>
+                </table>
+            </div>
+            <button class="col button button-large button-fill" @click=${crearCarrera}>Registrar carrera</button>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, { $, $f7, $on, $f7router, $update }) => {
+        // URL BASE
+        const baseUrl = "http://localhost/uml/Framework7-api/";
+
+        // Buffer de lista de carreras
+        let carreras = [];
+
+        const cargarCarreras = () => {
+            $f7.preloader.show();
+            let url = baseUrl + 'listaCarreras.php';
+            $f7.request.json(url)
+                .then(function (res) {
+                    let data = res.data;
+                    console.log(data);
+                    carreras = data;
+                    $f7.preloader.hide();
+                    $update();
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    $f7.preloader.hide();
+                    $f7.dialog.alert('No se pudo establecer una conexión con el API');
+                });
+        };
+
+        const crearCarrera = () => {
+            $f7.dialog.prompt('Nombre de la carrera', "Registrar carrera", function (carrera) {
+                console.log(`Carrera: ${carrera}`);
+                $f7.dialog.prompt('Año de la carrera', "Registrar carrera", function (anio) {
+                    console.log(`Año: ${anio}`);
+                    console.log(`Se registrara la carrera ${carrera} de ${anio} año`);
+
+                    let url = baseUrl + 'crearCarrera.php';
+                    $f7.request.json(url, {
+                        nombre_carrera: carrera,
+                        anio_carrera: anio
+                    })
+                        .then(function (res) {
+                            let data = res.data;
+                            console.log(data);
+                            $f7.dialog.alert(`Carrera registrada`);
+                            cargarCarreras();
+                        })
+                        .catch(function (err) {
+                            console.log(err);
+                            $f7.dialog.alert('No se pudo establecer una conexión con el API');
+                        });
+                });
+            });
+        };
+
+        const borrarCarrera = function (id_carrera) {
+            console.log(id_carrera);
+            $f7.dialog.confirm(`Seguro quieres borrar la carrera id ${id_carrera}`, `Borrar carrera`, function () {
+                let url = baseUrl + 'borrarCarrera.php';
+                $f7.request.json(url, {
+                    id_carrera: id_carrera
+                })
+                    .then(function (res) {
+                        let data = res.data;
+                        console.log(data);
+                        $f7.dialog.alert(`Carrera borrada`);
+                        cargarCarreras();
+                    })
+                    .catch(function (err) {
+                        console.log(err);
+                        $f7.dialog.alert('No se pudo establecer una conexión con el API');
+                    });
+            });
+        };
+
+        $on('pageInit', (e, page) => {
+            console.log('pageInit', page);
+            cargarCarreras();
+        });
+
+        return $render;
+    };
+</script>
