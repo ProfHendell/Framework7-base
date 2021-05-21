@@ -20,7 +20,7 @@
                 <ul>
                     <li class="item-content item-input">
                         <div class="item-media">
-                            <i class="icon material-icons">build</i>
+                            <i class="icon material-icons">school</i>
                         </div>
                         <div class="item-inner">
                             <div class="item-title item-floating-label">Carrera</div>
@@ -28,7 +28,14 @@
                                 <input type="text" id="nombreCarrera" placeholder="Nombre de la carrera"
                                     @input=${inputCarera} />
                                 <span class="input-clear-button"></span>
-                                <span id="nombreCarreraResultados"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-content item-input">
+                        <div class="item-inner">
+                            <div class="item-input-wrap input-dropdown-wrap">
+                                <select id="nombreCarreraResultados" placeholder="Esperando resultados...">
+                                </select>
                             </div>
                         </div>
                     </li>
@@ -79,7 +86,7 @@
                     </li>
                 </ul>
             </div>
-            <button class="col button button-large button-fill">Cargar asistencia</button>
+            <button class="col button button-large button-fill" @click=${cargarAsistencia}>Cargar asistencia</button>
             <div class="card card-expandable">
                 <div class="card-content">
                     <div class="bg-color-red" style="height: 300px">
@@ -119,10 +126,40 @@
 </template>
 <script>
     export default (props, { $, $f7, $f7router, $update }) => {
+        // URL BASE
+        const baseUrl = "http://localhost/uml/Framework7-api/";
+
         const inputCarera = () => {
             let input = $('#nombreCarrera');
-            $('#nombreCarreraResultados').html(`<a href="#">${input.val()}</a>`);
-            console.log(input.val());
+            let nombreCarrera = input.val();
+
+            let url = baseUrl + 'buscarCarrera.php';
+            $f7.request.json(url, {
+                nombre_carrera: nombreCarrera
+            })
+                .then(function (res) {
+                    let data = res.data;
+                    console.log(data);
+                    if (!data.error) {
+                        $('#nombreCarreraResultados').empty();
+                        data.forEach(carrera => {
+                            console.log(carrera);
+                            $('#nombreCarreraResultados').append(`<option value="${carrera.id_carrera}">${carrera.nombre_carrera}</option>`);
+                            // $('#nombreCarreraResultados').html(`<a href="#" onclick='function () {this.innerHTML="foo"}'>${carrera.nombre_carrera}</a>`);
+                        });
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err);
+                    $f7.dialog.alert('No se pudo establecer una conexión con el API');
+                });
+        };
+
+        const cargarAsistencia = () => {
+            let carreraMarcada = $('#nombreCarreraResultados').val(),
+                anioCarrera = $('#añoCarrera').val();
+
+            console.log(carreraMarcada, anioCarrera);
         };
         return $render;
     };
